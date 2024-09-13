@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: CoreUmsApplication
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://${MYSQL_HOST}:3306/ums_db
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+logging:
+  level:
+    org:
+      thymeleaf: DEBUG
+      springframework:
+        web:
+          servlet: DEBUG

@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.6'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'org.codehustle.ums'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+jar{
+    manifest {
+        attributes('Main-Class':'org.codehustle.ums.UmsCoreApplication')
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.6'
+    implementation 'com.mysql:mysql-connector-j:8.0.31'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.6'
+    implementation 'org.projectlombok:lombok:1.18.24'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+}

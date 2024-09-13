@@ -1,0 +1,17 @@
+group = 'org.codehustle'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+allprojects {
+    apply {
+        plugin 'java'
+    }
+}
+
+subprojects {
+    sourceCompatibility=17
+    targetCompatibility=17
+}

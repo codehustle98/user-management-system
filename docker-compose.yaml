@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+  web:
+    image: ums_web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_HOST: mysql_container
+    ports:
+      - 8080:8080
+    networks:
+      - ums_network
+    depends_on:
+      mysql:
+        condition: service_started
+  export:
+    image: ums_export
+    build:
+      context: ./export
+      dockerfile: DockerFile
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_HOST: mysql_container
+    ports:
+      - 8081:8081
+    networks:
+      - ums_network
+    depends_on:
+      mysql:
+        condition: service_started
+  mysql:
+    image: mysql:8.0
+    restart: always
+    container_name: mysql_container
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ums_db
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - ums_network
+volumes:
+  mysql-data:
+networks:
+  ums_network:

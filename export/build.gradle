@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.6'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'org.codehustle.ums'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+jar{
+    manifest {
+        attributes('Main-Class':'org.codehustle.ums.UmsExportApplication')
+    }
+}
+
+dependencies {
+    implementation(project(":core"))
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.6'
+    implementation 'com.opencsv:opencsv:5.7.1'
+}
+
+test {
+    useJUnitPlatform()
+}
