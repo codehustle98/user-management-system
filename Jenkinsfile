@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages{
-        stage('Build Core'){
+        stage('Build'){
             steps{
                 script{
                     if(isUnix()){
@@ -9,18 +9,6 @@ pipeline {
                     }else{
                         echo 'Running on windows !'
                         bat 'gradlew :core:clean build'
-                    }
-                }
-            }
-        }
-        stage('Build Web & Export'){
-            steps{
-                script{
-                    if(isUnix()){
-
-                    }else{
-                        bat 'gradlew :web:clean build'
-                        bat 'gradlew :export:clean build'
                     }
                 }
             }
