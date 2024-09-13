@@ -15,7 +15,7 @@ services:
       - ums_network
     depends_on:
       mysql:
-        condition: service_started
+        condition: service_healthy
   export:
     image: ums_export
     build:
@@ -31,7 +31,7 @@ services:
       - ums_network
     depends_on:
       mysql:
-        condition: service_started
+        condition: service_healthy
   mysql:
     image: mysql:8.0
     restart: always
@@ -46,6 +46,11 @@ services:
       - 3306:3306
     networks:
       - ums_network
+    healthcheck:
+      test: ["CMD","mysqladmin","ping","--silent"]
+      interval: 30s
+      retries: 3
+      timeout: 15s
 volumes:
   mysql-data:
 networks:
