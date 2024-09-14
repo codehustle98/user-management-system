@@ -35,5 +35,17 @@ pipeline {
                 }
             }
         }
+        stage("Login into Ubuntu WSL"){
+            steps{
+                script{
+                    if(isUnix()){
+
+                    }else{
+                        bat 'ssh ubuntu@172.25.82.0'
+                        sh whoami
+                    }
+                }
+            }
+        }
     }
 }
