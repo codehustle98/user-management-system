@@ -23,4 +23,8 @@ public class UserService {
     public void saveUser(User user){
         userRepository.save(user);
     }
+
+    public void saveAllUsers(List<User> userList){
+        userRepository.saveAll(userList);
+    }
 }

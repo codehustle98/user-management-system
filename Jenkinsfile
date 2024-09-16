@@ -8,7 +8,7 @@ pipeline {
 
                     }else{
                         echo 'Running on windows !'
-                        bat 'gradlew :core:clean build'
+                        bat 'gradlew clean build'
                     }
                 }
             }
@@ -30,7 +30,7 @@ pipeline {
                     if(isUnix()){
 
                     }else{
-                        bat 'docker-compose up'
+                        bat 'docker-compose up -d'
                     }
                 }
             }

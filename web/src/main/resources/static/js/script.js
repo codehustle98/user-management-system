@@ -48,4 +48,28 @@ $(document).ready(function (){
            }
        })
     });
+
+    $("#uploadBtn").click(function (){
+        $('#uploadInput').click();
+    });
+
+    $("#uploadInput").change(function (event){
+        event.preventDefault();
+
+        var formData = new FormData();
+        formData.append("file",event.target.files[0])
+
+        $.ajax({
+            url:'http://localhost:8082/import',
+            type:'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success:function (){
+                window.location.reload();
+            }
+        });
+    });
+
+
 });

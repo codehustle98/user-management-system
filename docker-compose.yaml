@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   web:
     image: ums_web
@@ -27,6 +26,22 @@ services:
       MYSQL_HOST: mysql_container
     ports:
       - 8081:8081
+    networks:
+      - ums_network
+    depends_on:
+      mysql:
+        condition: service_healthy
+  import:
+    image: ums_import
+    build:
+      context: ./import
+      dockerfile: Dockerfile
+    ports:
+      - 8082:8082
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_HOST: mysql_container
     networks:
       - ums_network
     depends_on:
