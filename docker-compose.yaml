@@ -26,6 +26,8 @@ services:
       MYSQL_HOST: mysql_container
     ports:
       - 8081:8081
+    volumes:
+      - export-data:/export
     networks:
       - ums_network
     depends_on:
@@ -68,5 +70,6 @@ services:
       timeout: 15s
 volumes:
   mysql-data:
+  export-data:
 networks:
   ums_network:

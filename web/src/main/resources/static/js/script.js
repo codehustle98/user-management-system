@@ -29,21 +29,11 @@ $(document).ready(function (){
        $.ajax({
            url:"http://localhost:8081/export",
            type: "GET",
-           xhrFields: {
-               responseType: 'blob'
-           },
            success:function (data, status, xhr){
-               const filename = "users";
-               var disposition = xhr.getResponseHeader('Content-Disposition');
 
-               var link = document.createElement('a');
-               link.href = window.URL.createObjectURL(data);
-               link.download = filename;
-               document.body.appendChild(link);
-               link.click();
-               document.body.removeChild(link);
            },
-           error: function() {
+           error: function(err) {
+               console.log(err);
                alert('An error occurred while downloading the file.');
            }
        })
@@ -71,5 +61,48 @@ $(document).ready(function (){
         });
     });
 
+    $("#pills-export-tab").click(function (){
+        $.ajax({
+            url:'http://localhost:8081/export/files',
+            type:'GET',
+            contentType:'application/json',
+            success:function (data){
+                const tbody = $("#exportBody");
+                tbody.empty();
 
+                if(data.length > 0){
+                    data.forEach(item => {
+                        tbody.append(`
+                                <tr>
+                                    <td>${item.filename}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-success" id="exportFileBtn" data-id="${item.logId}"><i class="bi bi-cloud-arrow-down"></i></button>
+                                        <button type="button" class="btn btn-sm btn-danger" id="exportFileDeleteBtn" data-id="${item.logId}"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                            `);
+                    });
+                }
+            },
+            error:function (err){
+                console.log(err);
+            }
+        })
+    });
+
+    $("#exportBody").on('click','#exportFileBtn',function (){
+       const id = $(this).attr("data-id");
+       window.location.href = `http://localhost:8081/export/download/${id}`;
+    });
+
+    $("#exportBody").on('click','#exportFileDeleteBtn',function (){
+       const id =  $(this).attr("data-id");
+       $.ajax({
+           url:'http://localhost:8081/export/file/'+id,
+           type:'DELETE',
+           success:function (){
+               $("#pills-export-tab").trigger('click');
+           }
+       });
+    });
 });

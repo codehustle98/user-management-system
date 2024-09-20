@@ -3,22 +3,23 @@ package org.codehustle.ums.controller;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import org.codehustle.ums.entity.ExportLog;
 import org.codehustle.ums.entity.User;
 import org.codehustle.ums.service.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/export")
@@ -29,8 +30,15 @@ public class ExportController {
     private ExportService exportService;
 
     @GetMapping
-    public ResponseEntity<StreamingResponseBody> exportCsv() throws Exception {
+    public ResponseEntity exportCsv() throws Exception {
         List<User> userList = exportService.getUsers();
+
+        if(!Files.isDirectory(Path.of("/export"))){
+            Files.createDirectory(Path.of("/export"));
+        }
+        String filename = "users_"+System.currentTimeMillis()+".csv";
+        File file = new File("/export/"+filename);
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
 
         StreamingResponseBody stream = outputStream -> {
             try(Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)){
@@ -41,10 +49,32 @@ public class ExportController {
                 }
             }
         };
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=users.csv")
-                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
-                .body(stream);
+        stream.writeTo(fileOutputStream);
+        exportService.saveExportLog(file);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/download/{id}")
+    public ResponseEntity<FileSystemResource> downloadExcel(@PathVariable("id")Integer id){
+        if (Files.isDirectory(Path.of("/export"))){
+            Optional<ExportLog> exportLog = exportService.getFilePath(id);
+            FileSystemResource systemResource = new FileSystemResource(new File(exportLog.get().getFilePath()));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename="+exportLog.get().getFilename())
+                    .body(systemResource);
+        }
+        return null;
+    }
+
+    @GetMapping(value = "/files")
+    public ResponseEntity<List<ExportLog>> getAllExportLogs(){
+        return ResponseEntity.ok(exportService.getExportLogs());
+    }
+
+    @DeleteMapping(value = "/file/{id}")
+    public ResponseEntity deleteFile(@PathVariable Integer id) throws IOException {
+        exportService.deleteFile(id);
+        return ResponseEntity.ok().build();
     }
 }
