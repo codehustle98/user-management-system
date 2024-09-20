@@ -1,6 +1,15 @@
 pipeline {
     agent any
     stages{
+        stage('Extract Version'){
+            steps{
+                script{
+                    def version = readFile('build.gradle').find(/version\s*=\s*['"](.+)['"]/).replaceAll(/.*['"](.+)['"].*/, '$1')
+                    env.VERSION = version
+                    echo 'Running Version : ${env.VERSION}'
+                }
+            }
+        }
         stage('Build'){
             steps{
                 script{
@@ -31,18 +40,6 @@ pipeline {
 
                     }else{
                         bat 'docker-compose up -d'
-                    }
-                }
-            }
-        }
-        stage("Login into Ubuntu WSL"){
-            steps{
-                script{
-                    if(isUnix()){
-
-                    }else{
-                        bat 'ssh ubuntu@172.25.82.0'
-                        sh whoami
                     }
                 }
             }

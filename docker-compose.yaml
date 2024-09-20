@@ -1,6 +1,7 @@
 services:
   web:
-    image: ums_web
+    image: ums_web:${VERSION}
+    container_name: ums_web_service
     build:
       context: ./web
       dockerfile: Dockerfile
@@ -16,7 +17,8 @@ services:
       mysql:
         condition: service_healthy
   export:
-    image: ums_export
+    image: ums_export:${VERSION}
+    container_name: ums_export_service
     build:
       context: ./export
       dockerfile: DockerFile
@@ -34,7 +36,8 @@ services:
       mysql:
         condition: service_healthy
   import:
-    image: ums_import
+    image: ums_import:${VERSION}
+    container_name: ums_import_service
     build:
       context: ./import
       dockerfile: Dockerfile
