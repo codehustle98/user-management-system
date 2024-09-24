@@ -51,8 +51,8 @@ pipeline {
         stage('SSH Login into WSL'){
             steps{
                 script{
-                    bat 'ssh -T -o StrictHostKeyChecking=no ubuntu@172.25.82.0'
-                    sh 'whoami'
+                    bat 'ssh -T ubuntu@172.25.82.0'
+                    echo 'whoami'
                 }
             }
         }
