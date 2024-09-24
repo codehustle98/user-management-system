@@ -52,7 +52,7 @@ pipeline {
             steps{
                 script{
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} 'whoami'
+                    ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} 'bash -c "whoami"'
                     """
                 }
             }
