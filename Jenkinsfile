@@ -44,17 +44,5 @@ pipeline {
                 }
             }
         }
-        stage('SSH into Ubuntu'){
-            steps{
-                script{
-                    if(isUnix()){
-
-                    }else{
-                        bat 'ssh -t ubuntu@172.25.82.0'
-                        echo 'Logged into Ubuntu'
-                    }
-                }
-            }
-        }
     }
 }
