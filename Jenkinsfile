@@ -50,7 +50,7 @@ pipeline {
                     if(isUnix()){
 
                     }else{
-                        bat 'ssh ubuntu@172.25.82.0'
+                        bat 'ssh -t ubuntu@172.25.82.0'
                         echo 'Logged into Ubuntu'
                     }
                 }
