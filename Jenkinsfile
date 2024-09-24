@@ -3,7 +3,6 @@ pipeline {
     environment{
         SSH_USER = 'ubuntu'
         SSH_HOST = '172.25.82.0'
-        SSH_PASS = 'root'
     }
     stages{
         stage('Extract Version'){
@@ -52,8 +51,8 @@ pipeline {
         stage('SSH Login into WSL'){
             steps{
                 script{
-                    bat 'ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST}'
-                    sh 'sshpass -p ${SSH_PASS}'
+                    bat 'ssh -o StrictHostKeyChecking=no ubuntu@$172.25.82.0'
+                    sh 'sshpass -p root'
                     sh 'whoami'
                 }
             }
