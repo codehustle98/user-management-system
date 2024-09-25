@@ -48,16 +48,5 @@ pipeline {
                 }
             }
         }
-        stage('SSH Login into WSL'){
-            steps{
-                script{
-                    sshagent(['Ubuntu']){
-                        sh """
-                            ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} 'whoami'
-                        """
-                    }
-                }
-            }
-        }
     }
 }
