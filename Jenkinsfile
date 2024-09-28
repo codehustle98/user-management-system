@@ -54,7 +54,7 @@ pipeline {
             steps{
                 script{
                     sshagent(["Ubuntu-WSL"]){
-                       sh 'wsl echo "Hello wOwlrd !"'
+                       sh 'echo "Hello wOwlrd !"'
                     }
                 }
             }
