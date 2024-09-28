@@ -53,7 +53,7 @@ pipeline {
         stage('SSH Into WSL'){
             steps{
                 script{
-                    sshagent(["${SSH_CREDENTIALS}"]){
+                    sshagent(["Ubuntu-WSL"]){
                        sh 'whoami'
                     }
                 }
