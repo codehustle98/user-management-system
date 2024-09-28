@@ -3,6 +3,8 @@ pipeline {
     environment{
         SSH_USER = 'ubuntu'
         SSH_HOST = '172.25.82.0'
+        SSH_CREDENTIALS = 'Ubuntu-WSL'
+        REMOTE_PORT = 22
     }
     stages{
         stage('Extract Version'){
@@ -44,6 +46,20 @@ pipeline {
 
                     }else{
                         bat 'docker-compose up -d'
+                    }
+                }
+            }
+        }
+        stage('SSH Into WSL'){
+            steps{
+                script{
+                    sshagent([${SSH_CREDENTIALS}]){
+                       sh """
+                       ssh -o StrictHostKeyChecking=no -p ${REMOTE_PORT} ${SSH_USER}@${SSH_HOST}
+                       '
+                       whoami
+                       '
+                       """
                     }
                 }
             }
