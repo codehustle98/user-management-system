@@ -6,6 +6,15 @@ pipeline {
         SSH_CREDENTIALS = 'Ubuntu-WSL'
         REMOTE_PORT = 22
     }
+    stages('Cleanup'){
+        stage{
+            steps{
+                script{
+                    deleteDir()
+                }
+            }
+        }
+    }
     stages{
         stage('Extract Version'){
             steps{
