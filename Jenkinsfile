@@ -7,13 +7,6 @@ pipeline {
         REMOTE_PORT = 22
     }
     stages{
-        stage('Cleanup'){
-            steps{
-                script{
-                    deleteDir()
-                }
-            }
-        }
         stage('Extract Version'){
             steps{
                 script{
