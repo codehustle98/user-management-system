@@ -54,7 +54,7 @@ pipeline {
             steps{
                 script{
                     sshagent(["${SSH_CREDENTIALS}"]){
-                       sh whoami
+                       sh 'whoami'
                     }
                 }
             }
