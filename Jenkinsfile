@@ -54,7 +54,9 @@ pipeline {
             steps{
                 script{
                     sshagent(["Ubuntu-WSL"]){
-                       sh 'whoami'
+                       sh '''
+                        ssh ${SSH_USER}@${SSH_HOST "echo 'Hello, world !'"
+                       '''
                     }
                 }
             }
