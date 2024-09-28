@@ -54,10 +54,7 @@ pipeline {
             steps{
                 script{
                     sshagent(["${SSH_CREDENTIALS}"]){
-                       sh """
-                       ssh -o StrictHostKeyChecking=no -p ${REMOTE_PORT} ${SSH_USER}@${SSH_HOST}
                        sh whoami
-                       """
                     }
                 }
             }
