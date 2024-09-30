@@ -1,5 +1,5 @@
 pipeline {
-    agent 'Ubuntu'
+    agent any
     stages{
         stage('Extract Version'){
             steps{
