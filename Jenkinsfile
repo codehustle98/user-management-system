@@ -1,11 +1,5 @@
 pipeline {
-    agent any
-    environment{
-        SSH_USER = 'ubuntu'
-        SSH_HOST = '172.25.82.0'
-        SSH_CREDENTIALS = 'Ubuntu-WSL'
-        REMOTE_PORT = 22
-    }
+    agent 'Ubuntu'
     stages{
         stage('Extract Version'){
             steps{
@@ -19,11 +13,7 @@ pipeline {
         stage('Build'){
             steps{
                 script{
-                    if(isUnix()){
-
-                    }else{
-                        echo 'Running on windows !'
-                        bat 'gradlew clean build'
+                      sh 'gradlew clean build'
                     }
                 }
             }
@@ -31,31 +21,14 @@ pipeline {
         stage('Build Docker Images'){
             steps{
                 script{
-                    if(isUnix()){
-
-                    }else{
-                        bat 'docker-compose build';
-                    }
+                   sh 'docker-compose build';
                 }
             }
         }
         stage('Run Container'){
             steps{
                 script{
-                    if(isUnix()){
-
-                    }else{
-                        bat 'docker-compose up -d'
-                    }
-                }
-            }
-        }
-        stage('SSH Into WSL'){
-            steps{
-                script{
-                    sshagent(["Ubuntu-WSL"]){
-                       sh 'echo "Hello wOwlrd !"'
-                    }
+                   sh 'docker-compose up -d'
                 }
             }
         }
