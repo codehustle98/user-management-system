@@ -1,6 +1,13 @@
 pipeline {
     agent any
     stages{
+        stage('Set Permissions'){
+            steps{
+                script{
+                    sh 'chmod +x ./gradlew'
+                }
+            }
+        }
         stage('Extract Version'){
             steps{
                 script{
@@ -13,7 +20,7 @@ pipeline {
         stage('Build'){
             steps{
                 script{
-                   sh './gradlew clean build'
+                   sh 'gradlew clean build'
                 }
             }
         }
